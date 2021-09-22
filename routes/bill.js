@@ -11,17 +11,22 @@ router.get("/", function (req, res, next) {
 
 // 根据类型和组织查询单据
 router.get("/queryByType", function (req, res, next) {
-
     let params=req.query
     let resData = {
         list: [],
         code: 0,
         msg: "",
     };
-    Bill.find({
-        billType:params.billType,
-        orgId:params.orgId
-    })
+    let filter={
+        billType:params.billType
+    }
+    if (params.orgId){
+        filter.orgId=params.orgId
+    }
+    if (params.vendorId){
+        filter.vendorId=params.vendorId
+    }
+    Bill.find(filter)
         .then((ret) => {
             resData.code = 1;
             resData.msg = "查询成功";
@@ -31,6 +36,7 @@ router.get("/queryByType", function (req, res, next) {
             console.log("错误信息", err);
         })
         .finally(() => {
+            res.filter=filter
             res.json(resData);
         });
 });
@@ -86,8 +92,6 @@ router.post('/save',function (req,res){
     })
 
     bill.save((err, ret) => {
-        console.log("错误", err);
-        console.log("结果", ret);
         if (err){
             resData.msg='保存失败'
         }else {
