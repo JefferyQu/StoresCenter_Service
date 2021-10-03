@@ -22,6 +22,47 @@ router.post("/sign_up", function (req, res, next) {
     password: param.password,
     orgId: "",
     orgName: "",
+    panelModule:[ 
+        {
+      code: "400",
+      name: "在售商品数",
+      display: true
+    },
+      {
+        code: "401",
+        name: "商品数/库存容量",
+        display: true
+      },
+      {
+        code: "402",
+        name: "已完成订单数",
+        display: true
+      },
+      {
+        code: "403",
+        name: "进货中订单数",
+        display: false
+      },
+      {
+        code: "404",
+        name: "退货中订单数",
+        display: false
+      },
+      {
+        code: "405",
+        name: "进行中订单数",
+        display: false
+      },
+      {
+        code: "406",
+        name: "员工数",
+        display: false
+      },
+      {
+        code: "407",
+        name: "待验收订单数",
+        display: false
+      }]
   });
 
   let resData = {

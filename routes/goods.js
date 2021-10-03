@@ -9,7 +9,7 @@ router.get("/", function (req, res, next) {
     });
 });
 
-// 查询所有组织
+// 查询所有商品
 router.get("/query", function (req, res, next) {
 
     let params=req.query
@@ -30,6 +30,43 @@ router.get("/query", function (req, res, next) {
         .finally(() => {
             res.json(resData);
         });
+});
+
+// 添加商品
+router.post("/add", function (req, res, next) {
+
+    let params = req.body
+    console.log(req.body);
+    let resData = {
+        code: 0,
+        msg: "",
+    };
+
+    const goods=new Goods({
+        pluCode:params.pluCode || '000'+Date.now(),
+        pluName:params.pluName,
+        clsId:params.clsId,
+        clsName:params.clsName,
+        price:params.price,
+        vipPrice:params.vipPrice,
+        size:params.size,
+        unit:params.unit,
+        orgId:params.orgId,
+        orgName:params.orgName,
+        imgUrl:params.imgUrl,
+        inventory:params.inventory,
+        publish:params.publish
+    })
+    goods.save((err, ret) => {
+        if (err) {
+            resData.msg = '保存失败'
+        } else {
+            resData.code = 1;
+            resData.msg = "保存成功";
+        }
+        res.json(resData);
+    })
+
 });
 
 module.exports = router;
